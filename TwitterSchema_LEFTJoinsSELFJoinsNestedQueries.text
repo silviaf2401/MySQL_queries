@@ -1,0 +1,43 @@
+1. All the tweets from user id 1
+SELECT tweets.tweet 
+FROM users
+LEFT JOIN tweets ON tweets.user_id = users.id
+WHERE users.id =1
+
+2. Return all the tweets that the user with id 2 has tagged as favorites
+
+SELECT tweet.tweet 
+FROM users
+LEFT JOIN faves on faves.user_id = users.id
+LEFT JOIN tweets on tweets.id = faves.tweet_id
+WHERE users.id = 2 
+
+3. Get all the tweets that user with id 2, or user with id 1, has tagged as favorites
+
+SELECT GROUP_CONCAT(' ', tweet.tweet)
+FROM users
+LEFT JOIN faves on faves.user_id = users.id
+LEFT JOIN tweets on tweets.id = faves.tweet_id
+WHERE users.id = 2 OR users.id =1
+ORDER BY users.id;
+
+
+4.Get all the users that are following the user with id 1 (SELF JOIN)
+SELECT users.first_name as followed, users2.first_name as follower 
+FROM users 
+LEFT JOIN follows 
+ON follows.follower_id = users.id
+LEFT JOIN users as users2
+ON users2.id = follows.follower_id
+WHERE users.id = 1;
+
+
+
+
+5. Get all users that are not following the user with id of 2 (Nested queries)
+SELECT *
+FROM users
+WHERE users.id NOT IN (
+SELECT follower_id
+FROM follows
+WHERE followed_id =2) AND users.id !=2;

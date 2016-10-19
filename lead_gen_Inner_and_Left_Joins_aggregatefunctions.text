@@ -1,0 +1,59 @@
+JOIN
+
+1. Find all the clients first and last name, billing amounts and charged date, for clients that have been billed at least once.
+
+SELECT clients.first_name, clients.last_name, billing.amount, billing.charged_datetime
+FROM clients
+JOIN billing ON billing.clients_id = clients.id;
+
+2. List all the domain names and leads (first and last name) for each site for sites that have generated leads
+SELECT sites.domain_name, leads.first_name, leads.last_name
+FROM sites
+JOIN leads ON sites.id =leads.sites_id;
+
+3. Get the names of the clients, their domain names and the first names of all the leads generated from those sites 
+SELECT clients.first_name, clients.last_name, sites.domain_name, leads.first_name AS lead_first_name
+FROM clients
+JOIN sites ON sites.clients_id=clients.id
+JOIN leads ON leads.sites_id = sites.id
+
+
+LEFT AND RIGHT JOIN
+1. List all the clients and the sites each client has, even if the client hasn't landed a site yet
+SELECT clients.first_name, clients.last_name, sites.domain_name
+FROM clients
+LEFT JOIN sites ON sites.clients_id=clients.id
+
+2. List all the domain names and leads (first and last name) for each site, even if the site hasn't generated a lead yet
+SELECT sites.domain_name, leads.first_name, leads.last_name
+FROM sites
+LEFT JOIN leads ON sites.id =leads.sites_id;
+
+AGGREGATING FUNCTIONS
+1. Find all the clients (first and last name) and their total billing amounts
+SELECT clients.first_name, clients.last_name, SUM(billing.amount)
+FROM clients
+LEFT JOIN billing on billing.clients_id = clients.id
+GROUP BY clients.id
+
+2. Find all the clients (first and last name) and the minimum billing amounts
+SELECT clients.first_name, clients.last_name, MIN(billing.amount)
+FROM clients
+LEFT JOIN billing on billing.clients_id = clients.id
+GROUP BY clients.id
+
+3. List all the domain names associated with each client
+SELECT clients.first_name, clients.last_name, GROUP_CONCAT(' ',sites.domain_name) AS domains
+FROM clients
+LEFT JOIN sites ON sites.clients_id =clients.id
+GROUP BY clients.id
+
+
+3. Find the total number of leads for each site
+SELECT sites.domain_name, COUNT(leads.id) AS count_leads
+FROM sites 
+JOIN leads ON leads.sites_id = sites.id
+GROUP BY sites.id
+
+
+

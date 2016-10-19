@@ -1,0 +1,182 @@
+1. SELECT Basics on Twitter schema
+
+//Get all users
+SELECT * 
+from users;
+//Get the first names of all of the users
+SELECT first_name
+from users;
+//Get the first and last names of all of the users
+SELECT first_name, last_name
+from users;
+
+2. SELECT w/ Conditionals on Twitter schema
+//Only get the first name of users with id of 2
+SELECT first_name
+from users
+WHERE id =2;
+
+//Only get the last names of users with id of 2 or 3
+SELECT last_name 
+from users
+WHERE id =2 OR id=3;
+
+//Get all of the users with id greater than 2
+SELECT *
+from users 
+WHERE id >2;
+
+//Get all of the users with id less than or equal to 3
+SELECT *
+from users
+WHERE id <=3;
+
+//Get all of the users with first names ending in "e"
+SELECT *
+from users
+WHERE first_name like "%e";
+
+//Get all of the users with first names starting with "K"
+SELECT *
+from users
+WHERE first_name like "%K%";
+
+3. SELECT w/ Sorting
+//Get all of the users with the youngest users at the top of the table
+SELECT *
+from users
+ORDER BY birthday DESC;
+
+//Get all of the users with the oldest users at the top of the table
+SELECT *
+from users
+ORDER BY birthday ASC;
+
+//Get all of the users with the first name that ends with "e" with the youngest users at the top of the table
+SELECT * 
+from users
+WHERE first_name like "%e"
+ORDER BY birthday DESC;
+
+//Get only the first names of all of the users in alphabetical order
+SELECT first_name
+from users
+ORDER BY first_name;
+
+
+3. From SQL Zoo tutorials/SELECT basics http://sqlzoo.net/wiki/SQLZOO:SELECT_basics
+
+world table:
+name		continent	area 		population	gdp
+Afghanistan	Asia		652230		25500100	20343000000
+Albania		Europe		28748 		2831741 	12960000000
+Algeria		Africa		2381741 	37100000 	188681000000
+Andorra		Europe		468			78115 		3712000000
+Angola		Africa		1246700 	20609294 	100990000000
+....
+
+a) show the population of Germany
+SELECT population
+from world
+WHERE name='Germany';
+
+b)Show the name and the population for 'Ireland', 'Iceland' and 'Denmark'
+SELECT name, population
+from world
+WHERE name in ('Ireland', 'Iceland', 'Denmark');
+
+c) Show the country and the area for countries with an area between 200,000 and 250,000. 
+SELECT name, area
+from world
+WHERE area BETWEEN 200000 and 250000;
+
+4. From SQL Zoo tutorials/SELECT name: http://sqlzoo.net/wiki/SELECT_names
+
+world table:
+name	continent
+Afghanistan	Asia
+Albania	Europe
+Algeria	Africa
+Andorra	Europe
+Angola	Africa
+....
+
+
+a) Find the countries that start with Y
+SELECT name
+from world
+WHERE name LIKE 'Y%';
+
+b) Find the countries that end with y
+SELECT name
+from world
+WHERE name LIKE '%y';
+
+c) Find the countries that contain the letter x
+SELECT name
+from world
+WHERE name LIKE '%x%';
+
+d)Find the countries that end with land
+SELECT name
+from world
+WHERE name LIKE '%land';
+
+e)Find the countries that start with C and end with ia
+SELECT name
+from world
+WHERE name LIKE 'C%ia';
+
+f)Find the country that has oo in the name
+SELECT name
+from world
+WHERE name LIKE '%oo%';
+
+g)Find the countries that have three or more a in the name
+SELECT name 
+FROM world
+WHERE name LIKE '%a%a%a%';
+
+h)Find the countries that have "t" as the second character.
+SELECT name
+from world
+WHERE name like '_t%';
+
+i)Find the countries that have two "o" characters separated by two others.
+SELECT name
+from world
+WHERE name LIKE '%o__o%';
+
+j) Find the countries that have exactly four characters.
+SELECT name
+from world
+WHERE name like '____';
+
+k) Find the country where the name is the capital city.
+SELECT name
+from world
+WHERE name = capital;
+
+l) Find the country where the capital is the country plus "City".
+SELECT name 
+from world
+WHERE capital =CONCAT(name, " City");
+
+m) Find the capital and the name where the capital includes the name of the country
+SELECT capital, name
+from world
+WHERE capital LIKE CONCAT('%',name,'%');
+
+n) Find the capital and the name where the capital is an extension of name of the country
+SELECT name, capital
+from world
+WHERE capital LIKE CONCAT (name,'%')
+AND length(capital) > length(name);
+
+o)For Monaco-Ville the name is Monaco and the extension is -Ville.
+Show the name and the extension where the capital is an extension of name of the country.
+SELECT name, MID(capital,length(name)+1,length(capital)) AS extension 
+FROM world
+WHERE capital LIKE CONCAT (name, '%') AND length(capital)>length(name); 
+
+

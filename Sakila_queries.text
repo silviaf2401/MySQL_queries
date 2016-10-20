@@ -1,0 +1,66 @@
+1. Get all the customers inside city_id = 312. Return customer first name, last name, email, and address.
+SELECT customer.first_name, customer.last_name, customer.email, address.address, address.address2, address.postal_code, city.city, country.country 
+FROM country
+LEFT JOIN city ON country.country_id = city.country_id
+LEFT JOIN address ON city.city_id = address.city_id
+LEFT JOIN customer ON customer.address_id = address.address_id
+WHERE city.city_id = 312;
+
+2. Get all comedy films. Return film title, description, release year, rating, special features, and genre.
+
+SELECT film.title, film.description, film.release_year, film.rating, film.special_features, category.name
+FROM film
+LEFT JOIN film_category ON film_category.film_id = film.film_id
+LEFT JOIN category ON category.category_id = film_category.category_id
+WHERE category.category_id = 5;
+
+3. Get all the films joined by actor_id=5. Return the film title, description, and release year.
+SELECT film.title, film.description, film.release_year
+FROM film
+LEFT JOIN film_actor ON film_actor.film_id = film.film_id
+WHERE film_actor.actor_id = 5;
+
+
+4. Get all the customers in store_id = 1 and inside these cities (1, 42, 312 and 459). Return customer first name, last name, email, and address.
+SELECT 
+customer.first_name, customer.last_name, customer.email,
+country.country, city.city, address.address, address.address2, address.postal_code
+FROM country
+LEFT JOIN city ON country.country_id = city.country_id
+LEFT JOIN address ON address.city_id=city.city_id
+LEFT JOIN customer ON address.address_id = customer.address_id
+LEFT JOIN store ON customer.store_id = store.store_id
+WHERE store.store_id =1 AND city.city_id IN (1,42,312,459);
+
+5. Get all the films with a rating = G and special feature = behind the scenes, joined by actor_id =15. Return film title, film description, release year, rate, and special feature.
+SELECT film.title, film.description, film.release_year, film.rental_rate, film.special_features
+FROM film
+LEFT JOIN film_actor on film.film_id = film_actor.film_id
+LEFT JOIN actor on actor.actor_id =film_actor.actor_id
+WHERE film.rating = 'G' AND film.special_features LIKE '%Behind the Scenes%' AND actor.actor_id = 15;
+
+6. Get all the actors that joined in the film_id = 369. Return the film_id, title, actor_id, and actor_name.
+SELECT film.film_id, film.title, actor.actor_id, CONCAT(actor.first_name, ' ', actor.last_name) AS actor_name
+FROM film
+LEFT JOIN film_actor on film.film_id= film_actor.film_id
+LEFT JOIN actor on film_actor.actor_id= actor.actor_id
+WHERE film.film_id = 369;
+
+
+7. Get all drama films with a rental rate of 2.99. Return film title, description, release year, rating, special features, and genre (category).
+
+SELECT film.title, film.description, film.release_year, film.rating, film.special_features, category.name
+FROM film
+LEFT JOIN film_category ON film_category.film_id = film.film_id
+LEFT JOIN category ON film_category.category_id = category.category_id
+WHERE film.rental_rate = 2.99 AND category.name = 'Drama';
+
+8. Get all the action films which are joined by SANDRA KILMER. Return film title, description, release year, rating, special features, genre (category), and actor's first name and last name.
+SELECT film.title, film.description, film.release_year, film.rating, film.special_features, category.name, actor.first_name, actor.last_name
+FROM film
+LEFT JOIN film_category ON film_category.film_id = film.film_id
+LEFT JOIN category ON film_category.category_id = category.category_id
+LEFT JOIN film_actor ON film_actor.film_id = film.film_id
+LEFT JOIN actor ON film_actor.actor_id = actor.actor_id
+WHERE actor.first_name='Sandra' AND actor.last_name='Kilmer' and category.name='Action';
+
